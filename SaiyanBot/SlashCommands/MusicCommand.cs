@@ -128,5 +128,39 @@ namespace SaiyanBot.SlashCommands
 
         }
 
+        [SlashCommand("pause","Pause voice")]
+        public async Task Pause(InteractionContext ctx)
+        {
+            // 檢查用戶是否在語音頻道
+            if (ctx.Member.VoiceState == null || ctx.Member.VoiceState.Channel == null)
+            {
+                await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                                                          .WithContent("You are not in a voice channel."));
+                return;
+            }
+
+            // 檢查是否已經連結用戶的語音頻道
+            var lava = ctx.Client.GetLavalink();
+            var node = lava.ConnectedNodes.Values.First();
+            var conn = node.GetGuildConnection(ctx.Member.VoiceState.Guild);
+
+            if (conn == null)
+            {
+                await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                                                          .WithContent("Lavalink is not connected."));
+                return;
+            }
+
+            // 檢查是否正在撥放音樂
+            if (conn.CurrentState.CurrentTrack == null)
+            {
+                await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                                                          .WithContent("There are no tracks loaded."));
+                return;
+            }
+
+            await conn.PauseAsync();
+        }
+
     }
 }
