@@ -11,5 +11,14 @@ namespace SaiyanBot
     {
         [JsonProperty("token")]
         public string Token { get; private set; }
+
+        [JsonProperty("lavalink_hostname")] 
+        public string LaravelLinkHostName { get; private set; }
+
+        [JsonProperty("lavalink_port")]
+        public int LaravelLinkPort { get; private set; }
+
+        [JsonProperty("lavalink_password")]
+        public string LaravelLinkPassword { get; private set; }
     }
 }

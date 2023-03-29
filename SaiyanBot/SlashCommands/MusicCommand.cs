@@ -89,6 +89,12 @@ namespace SaiyanBot.SlashCommands
                                                           .WithContent($"Left {channel.Name}!"));
         }
 
+        /// <summary>
+        ///  播放音樂
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <param name="search"></param>
+        /// <returns></returns>
         [SlashCommand("play", "Play a song")]
         public async Task Play(InteractionContext ctx, [Option("url", "youtube url", true)] string search)
         {
@@ -152,7 +158,8 @@ namespace SaiyanBot.SlashCommands
             }
 
             // 檢查是否正在撥放音樂
-            if (conn.CurrentState.CurrentTrack == null)
+            var track = conn.CurrentState.CurrentTrack;
+            if (track == null)
             {
                 await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
                                                           .WithContent("There are no tracks loaded."));
@@ -160,6 +167,9 @@ namespace SaiyanBot.SlashCommands
             }
 
             await conn.PauseAsync();
+
+            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                                                          .WithContent($"Now pause {track.Title}!"));
         }
 
     }

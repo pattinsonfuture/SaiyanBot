@@ -51,18 +51,18 @@ namespace SaiyanBot
             // 註冊SlashCommand功能
             var slash = Client.UseSlashCommands();
             slash.RegisterCommands<TestCommand>();
-            slash.RegisterCommands<MusicCommand>();
+            slash.RegisterCommands<MusicCommand>(1076913272323842209);
 
             // 設定LavaLink config
             var endpoint = new ConnectionEndpoint
             {
-                Hostname = "127.0.0.1", // From your server configuration.
-                Port = 2333 // From your server configuration
+                Hostname = configJson.LaravelLinkHostName, // From your server configuration.
+                Port = configJson.LaravelLinkPort // From your server configuration
             };
 
             var lavalinkConfig = new LavalinkConfiguration
             {
-                Password = "youshallnotpass", // From your server configuration.
+                Password = configJson.LaravelLinkPassword, // From your server configuration.
                 RestEndpoint = endpoint,
                 SocketEndpoint = endpoint
             };
